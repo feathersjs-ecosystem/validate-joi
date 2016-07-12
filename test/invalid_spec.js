@@ -1,0 +1,192 @@
+
+const assert = require('chai').assert;
+const errors = require('feathers-errors');
+const validate = require('../src');
+
+const Joi = require('joi');
+const name = Joi.string().trim().regex(/^[\sa-zA-Z0-9]{5,30}$/).required();
+const password = Joi.string().trim().min(2).max(30).required();
+const schema = Joi.object().keys({
+  name: name.uppercase(),
+  password,
+  confirmPassword: password.label('Confirm password'),
+});
+
+const errsRaw = {
+  name: '"name" with value "J" fails to match the required pattern: /^[\\sa-zA-Z0-9]{5,30}$/',
+  password: '"password" length must be at least 2 characters long',
+  confirmPassword: '"Confirm password" length must be at least 2 characters long'
+};
+
+const errsType = {
+  name: '"name" must consist of letters, digits or spaces.',
+  password: '"password" must be 2 or more chars.',
+  confirmPassword: '"Confirm password" must be 2 or more chars.'
+};
+
+const errsGeneric = {
+  name: '"name" is badly formed.',
+  password: '"password" is badly formed.',
+  confirmPassword: '"Confirm password" is badly formed.'
+};
+
+const errsSubstr = {
+  name: '"name" is badly formed.',
+  password: '"password" must be 2 or more chars.',
+  confirmPassword: '"Confirm password" must be 2 or more chars.'
+};
+
+const errsTypeMongoose = {
+  name: {
+    message: '"name" must consist of letters, digits or spaces.',
+    name: 'ValidatorError',
+    path: 'name',
+    type: 'string.regex.base'
+  },
+  password: {
+    message: '"password" must be 2 or more chars.',
+    name: 'ValidatorError',
+    path: 'password',
+    type: 'string.min'
+  },
+  confirmPassword: {
+    message: '"Confirm password" must be 2 or more chars.',
+    name: 'ValidatorError',
+    path: 'confirmPassword',
+    type: 'string.min'
+  }
+};
+
+describe('invalid data - form UI', () => {
+  var joiOptions, values, converted, hook, valuesBad, hookBad; // eslint-disable-line no-var
+
+  beforeEach(function() {
+    joiOptions =  { abortEarly: false };
+    values = { name: 'a1234567z', password: '123456789', confirmPassword: '123456789' };
+    converted = { name: 'A1234567Z', password: '123456789', confirmPassword: '123456789' };
+    hook = { type: 'before', method: 'create', data: values };
+
+    valuesBad = { name: 'j', password: 'z', confirmPassword: 'z' };
+    hookBad = { type: 'before', method: 'create', data: valuesBad };
+  });
+
+  it('throws on error. default is 1 message, no translation', (done) => {
+    joiOptions = {};
+
+    const fcn = () => {
+      validate.form(schema, joiOptions, undefined, true)(hookBad, function() {
+        assert(false, 'validate.form callback unexpectedly called');
+        done();
+      });
+    };
+
+    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsRaw.name));
+    done();
+  });
+
+  it('throws on error. return all messages, no translation', (done) => {
+    const fcn = () => {
+      validate.form(schema, joiOptions, undefined, true)(hookBad, function() {
+        assert(false, 'validate.form callback unexpectedly called');
+        done();
+      });
+    };
+
+    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsRaw));
+    done();
+  });
+
+  it('throws on error. translate by type', (done) => {
+    const translations = {
+      'string.min': function() { return '"${key}" must be ${limit} or more chars.'; },
+      'string.regex.base': function(context) {
+        switch (context.pattern.toString()) {
+          case /^[\sa-zA-Z0-9]{5,30}$/.toString():
+            return '"${key}" must consist of letters, digits or spaces.';
+        }
+      }
+    };
+
+    const fcn = () => {
+      validate.form(schema, joiOptions, translations, true)(hookBad, function() {
+        assert(false, 'validate.form callback unexpectedly called');
+        done();
+      });
+    };
+
+    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsType));
+    done();
+  });
+
+  it('throws on error. translate generic', (done) => {
+    const translations = '"${key}" is badly formed.';
+
+    const fcn = () => {
+      validate.form(schema, joiOptions, translations, true)(hookBad, function() {
+        assert(false, 'validate.form callback unexpectedly called');
+        done();
+      });
+    };
+
+    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsGeneric));
+    done();
+  });
+
+  it('throws on error. translate using substrings', (done) => {
+    const translations = [
+      { regex: 'at least 2 characters long',
+        message: '"${key}" must be 2 or more chars.'
+      },
+      { regex: /required pattern/,
+        message: '"${key}" is badly formed.'
+      }
+    ];
+
+    const fcn = () => {
+      validate.form(schema, joiOptions, translations, true)(hookBad, function() {
+        assert(false, 'validate.form callback unexpectedly called');
+        done();
+      });
+    };
+
+    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsSubstr));
+    done();
+  });
+});
+
+
+describe('invalid data - Mongoose', () => {
+  var joiOptions, values, converted, hook, valuesBad, hookBad; // eslint-disable-line no-var
+
+  beforeEach(function() {
+    joiOptions =  { abortEarly: false };
+    values = { name: 'a1234567z', password: '123456789', confirmPassword: '123456789' };
+    converted = { name: 'A1234567Z', password: '123456789', confirmPassword: '123456789' };
+    hook = { type: 'before', method: 'create', data: values };
+
+    valuesBad = { name: 'j', password: 'z', confirmPassword: 'z' };
+    hookBad = { type: 'before', method: 'create', data: valuesBad };
+  });
+
+  it('throws on error. translate by type', (done) => {
+    const translations = {
+      'string.min': function() { return '"${key}" must be ${limit} or more chars.'; },
+      'string.regex.base': function(context) {
+        switch (context.pattern.toString()) {
+          case /^[\sa-zA-Z0-9]{5,30}$/.toString():
+            return '"${key}" must consist of letters, digits or spaces.';
+        }
+      }
+    };
+
+    const fcn = () => {
+      validate.mongoose(schema, joiOptions, translations, true)(hookBad, function() {
+        assert(false, 'validate.mongoose callback unexpectedly called');
+        done();
+      });
+    };
+
+    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsTypeMongoose));
+    done();
+  });
+});

@@ -1,5 +1,5 @@
 ## feathers-hooks-validate-joi
-Feathers hook for object schema and content validation using joi (from Walmart).
+Feathers hook utility for schema validation and sanitization using joi (from Walmart).
 
 Work in progress. Extracting from production code.
 
@@ -32,7 +32,7 @@ You can then require the utilities.
 
 ```javascript
 // ES5
-const validate = require('feathers-hooks-validate-joi');
+var validate = require('feathers-hooks-validate-joi');
 // or ES6
 import validate from 'feathers-hooks-validate-joi';
 ```

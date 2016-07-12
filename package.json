@@ -1,10 +1,14 @@
 {
   "name": "feathers-hooks-validate-joi",
   "version": "0.0.1",
-  "description": "Feathers hook for object schema and content validation using joi (from Walmart)",
+  "description": "Feathers hook utility for schema validation and sanitization using joi (from Walmart).",
   "main": "/lib",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "lint": "eslint --ext .js,.jsx .",
+    "build": "rm -rf lib && babel src --presets babel-preset-es2015 --out-dir lib",
+    "xxxpretest": "npm run build",
+    "test": "mocha --reporter spec 'test'",
+    "precover": "npm run build",
     "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
   },
   "repository": {
@@ -20,15 +24,21 @@
     "validation",
     "joi"
   ],
-  "author": "John <johnsz9999@gmail.com>",
+  "author": "John Szwaronek <johnsz9999@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/eddyystop/feathers-hooks-validate-joi/issues"
   },
   "homepage": "https://github.com/eddyystop/feathers-hooks-validate-joi#readme",
-  "dependencies": {},
+  "dependencies": {
+    "feathers-errors": "2.2.0",
+    "joi": "8.4.2",
+    "joi-errors-for-forms": "^0.2.2"
+  },
   "devDependencies": {
+    "babel-cli": "6.10.1",
     "babel-eslint": "6.1.0",
+    "babel-preset-es2015": "6.9.0",
     "chai": "3.5.0",
     "coveralls": "2.11.9",
     "eslint": "3.0.1",
