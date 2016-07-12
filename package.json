@@ -1,6 +1,6 @@
 {
   "name": "feathers-hooks-validate-joi",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Feathers hook utility for schema validation and sanitization using joi (from Walmart).",
   "main": "/lib",
   "scripts": {
