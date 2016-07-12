@@ -1,18 +1,21 @@
 
+/* eslint comma-dangle: 0, object-shorthand: 0, prefer-arrow-callback: 0*/ /* ES5 code */
+
 const Joi = require('joi');
 const errors = require('feathers-errors');
 const utils = require('feathers-hooks-utils');
 const joiErrorsForForms = require('joi-errors-for-forms');
 
 function validator(joiSchema, joiOptions, translator, ifTest) {
-  return (hook, next) => {
+  return function validatorInner(hook, next) {
     utils.checkContext(hook, 'before', ['create', 'update', 'patch'], 'validate-joi');
     const values = utils.get(hook);
 
-    Joi.validate(values, joiSchema, joiOptions, (joiErr, convertedValues) => {
+    Joi.validate(values, joiSchema, joiOptions,
+      function (joiErr, convertedValues) {
         const formErrors = translator(joiErr);
         if (formErrors) {
-          // Hacky but how else? No assertion library provides access to Error props.
+          // Hacky but how else without a custom assert?
           const msg = ifTest ? JSON.stringify(formErrors) : 'Invalid data';
           throw new errors.BadRequest(msg, { errors: formErrors });
         }
@@ -31,7 +34,7 @@ module.exports = {
     const translator = joiErrorsForForms.form(translations);
     return validator(joiSchema, joiOptions, translator, ifTest);
   },
-  mongoose: function (joiSchema, joiOptions, translations , ifTest) {
+  mongoose: function (joiSchema, joiOptions, translations, ifTest) {
     const translator = joiErrorsForForms.mongoose(translations);
     return validator(joiSchema, joiOptions, translator, ifTest);
   }

@@ -2,13 +2,10 @@
   "name": "feathers-hooks-validate-joi",
   "version": "0.1.0",
   "description": "Feathers hook utility for schema validation and sanitization using joi (from Walmart).",
-  "main": "/lib",
+  "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js,.jsx .",
-    "build": "rm -rf lib && babel src --presets babel-preset-es2015 --out-dir lib",
-    "xxxpretest": "npm run build",
-    "test": "mocha --reporter spec 'test'",
-    "precover": "npm run build",
+    "test": "mocha --reporter spec test/*",
     "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
   },
   "repository": {

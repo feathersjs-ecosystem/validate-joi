@@ -1,8 +1,6 @@
 ## feathers-hooks-validate-joi
 Feathers hook utility for schema validation and sanitization using joi (from Walmart).
 
-Work in progress. Extracting from production code.
-
 [![Build Status](https://travis-ci.org/eddyystop/feathers-hooks-validate-joi.svg?branch=master)](https://travis-ci.org/eddyystop/feathers-hooks-validate-joi)
 [![Coverage Status](https://coveralls.io/repos/github/eddyystop/feathers-hooks-validate-joi/badge.svg?branch=master)](https://coveralls.io/github/eddyystop/feathers-hooks-validate-joi?branch=master)
 

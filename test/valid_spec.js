@@ -1,6 +1,9 @@
 
+/* eslint  newline-per-chained-call: 0, no-shadow: 0, one-var: 0,
+one-var-declaration-per-line: 0, prefer-arrow-callback: 0 */ /* ES5 code */
+
 const assert = require('chai').assert;
-const validate = require('../src');
+const validate = require('../index');
 
 const Joi = require('joi');
 const name = Joi.string().trim().regex(/^[\sa-zA-Z0-9]{5,30}$/).required();
@@ -12,16 +15,16 @@ const schema = Joi.object().keys({
 });
 
 describe('valid values', () => {
-  var joiOptions, values, converted, hook, valuesBad, hookBad; // eslint-disable-line no-var
+  var joiOptions, values, converted, hook; // eslint-disable-line no-var
 
-  beforeEach(function() {
-    joiOptions =  { abortEarly: false };
+  beforeEach(function () {
+    joiOptions = { abortEarly: false };
     values = { name: 'a1234567z', password: '123456789', confirmPassword: '123456789' };
     converted = { name: 'A1234567Z', password: '123456789', confirmPassword: '123456789' };
   });
 
   describe('before hook', () => {
-    beforeEach(function() {
+    beforeEach(function () {
       hook = { type: 'before', method: 'create', data: values };
     });
 
@@ -45,7 +48,7 @@ describe('valid values', () => {
   });
 
   describe('update hook', () => {
-    beforeEach(function() {
+    beforeEach(function () {
       hook = { type: 'before', method: 'update', data: { $set: values } };
     });
 
@@ -69,7 +72,7 @@ describe('valid values', () => {
   });
 
   describe('patch hook', () => {
-    beforeEach(function() {
+    beforeEach(function () {
       hook = { type: 'before', method: 'patch', data: { $set: values } };
     });
 
