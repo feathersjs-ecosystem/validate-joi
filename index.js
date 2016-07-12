@@ -15,7 +15,7 @@ function validator(joiSchema, joiOptions, translator, ifTest) {
       function (joiErr, convertedValues) {
         const formErrors = translator(joiErr);
         if (formErrors) {
-          // Hacky but how else without a custom assert?
+          // Hacky, but how else without a custom assert?
           const msg = ifTest ? JSON.stringify(formErrors) : 'Invalid data';
           throw new errors.BadRequest(msg, { errors: formErrors });
         }
