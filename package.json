@@ -1,6 +1,6 @@
 {
   "name": "feathers-hooks-validate-joi",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Feathers hook utility for schema validation, sanitization and client notification using Joi.",
   "main": "index.js",
   "scripts": {
