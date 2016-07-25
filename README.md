@@ -95,6 +95,22 @@ To do.
 
 `npm run cover` to run tests plus coverage.
 
+## A Note on Internationalization
+
+The `options` in `Joi.validate(value, schema, options, cb)`supports a
+[`language` option](https://github.com/hapijs/joi/blob/v9.0.0/API.md#validatevalue-schema-options-callback)
+with which you can change
+[Joi error messages](https://github.com/hapijs/joi/blob/v9.0.0/lib/language.js)
+in bulk.
+
+You can then internationalize your field names and regex descriptions in the schema, e.g.
+
+```javascript
+Joi.string().regex(/^[\sa-zA-Z0-9]$/, i18n('letters, number and spaces')).label(i18n('Confirm password'))
+```
+
+These are suitable methods to internationalize the majority of Joi error messages.
+
 ## Contributors
 
 - [eddyystop](https://github.com/eddyystop)
