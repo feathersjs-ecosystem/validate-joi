@@ -24,7 +24,9 @@ const joiOptions = { convert: true, abortEarly: false };
 ```
 
 (1) Validate sanitize data. The client receives any errors in a 
-[form UI format.](https://github.com/eddyystop/joi-errors-for-forms#code-examples)
+[format suitable for forms](https://github.com/eddyystop/joi-errors-for-forms#code-examples)
+which also seems to be
+[recommend by Feathers](http://docs.feathersjs.com/middleware/error-handling.html#featherserror-api).
 
 ```javascript
 export.before = {
