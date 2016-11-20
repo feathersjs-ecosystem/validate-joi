@@ -7,9 +7,6 @@ const errors = require('feathers-errors');
 const utils = require('feathers-hooks-common/lib/utils');
 const joiErrorsForForms = require('joi-errors-for-forms');
 
-console.log(typeof utils);
-console.log(Object.keys(utils).toString())
-
 function validator(joiSchema, joiOptions, translator, ifTest) {
   return function validatorInner(hook, next) {
     utils.checkContext(hook, 'before', ['create', 'update', 'patch'], 'validate-joi');
