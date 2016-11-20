@@ -70,6 +70,8 @@ export.before = {
 };
 ```
 
+Note: Data values in the `$set` operator are not validated.
+You could use `joi-errors-for-forms` for that. 
 
 ## Motivation
 

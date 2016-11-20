@@ -49,13 +49,13 @@ describe('valid values', () => {
 
   describe('update hook', () => {
     beforeEach(function () {
-      hook = { type: 'before', method: 'update', data: { $set: values } };
+      hook = { type: 'before', method: 'update', data: values };
     });
 
     it('does not convert if convert=false', (done) => {
       validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data.$set, values);
+        assert.deepEqual(hook.data, values);
         done();
       });
     });
@@ -65,7 +65,7 @@ describe('valid values', () => {
 
       validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data.$set, converted);
+        assert.deepEqual(hook.data, converted);
         done();
       });
     });
@@ -73,13 +73,13 @@ describe('valid values', () => {
 
   describe('patch hook', () => {
     beforeEach(function () {
-      hook = { type: 'before', method: 'patch', data: { $set: values } };
+      hook = { type: 'before', method: 'patch', data: values };
     });
 
     it('does not convert if convert=false', (done) => {
       validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data.$set, values);
+        assert.deepEqual(hook.data, values);
         done();
       });
     });
@@ -89,7 +89,7 @@ describe('valid values', () => {
 
       validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data.$set, converted);
+        assert.deepEqual(hook.data, converted);
         done();
       });
     });

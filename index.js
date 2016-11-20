@@ -3,13 +3,17 @@
 
 const Joi = require('joi');
 const errors = require('feathers-errors');
-const utils = require('feathers-hooks-utils');
+//const utils = require('feathers-hooks-utils');
+const utils = require('feathers-hooks-common/lib/utils');
 const joiErrorsForForms = require('joi-errors-for-forms');
+
+console.log(typeof utils);
+console.log(Object.keys(utils).toString())
 
 function validator(joiSchema, joiOptions, translator, ifTest) {
   return function validatorInner(hook, next) {
     utils.checkContext(hook, 'before', ['create', 'update', 'patch'], 'validate-joi');
-    const values = utils.get(hook);
+    const values = utils.getItems(hook);
 
     Joi.validate(values, joiSchema, joiOptions,
       function (joiErr, convertedValues) {
@@ -21,7 +25,7 @@ function validator(joiSchema, joiOptions, translator, ifTest) {
         }
 
         if (joiOptions.convert === true) {
-          utils.setAll(hook, convertedValues);
+          utils.replaceItems(hook, convertedValues);
         }
         next(null, hook);
       }
