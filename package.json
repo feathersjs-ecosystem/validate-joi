@@ -30,7 +30,7 @@
   "dependencies": {
     "feathers-errors": "2.5.0",
     "feathers-hooks-common": "^1.6.1",
-    "joi": "8.4.2",
+    "joi": "^10.6.0",
     "joi-errors-for-forms": "^0.2.2"
   },
   "devDependencies": {
