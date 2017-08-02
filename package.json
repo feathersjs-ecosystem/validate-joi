@@ -29,7 +29,7 @@
   "homepage": "https://github.com/eddyystop/feathers-hooks-validate-joi#readme",
   "dependencies": {
     "feathers-errors": "2.5.0",
-    "feathers-hooks-common": "^1.6.1",
+    "feathers-hooks-common": "^3.6.1",
     "joi": "^10.6.0",
     "joi-errors-for-forms": "^0.2.2"
   },

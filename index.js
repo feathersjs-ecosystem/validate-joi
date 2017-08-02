@@ -4,7 +4,7 @@
 const Joi = require('joi');
 const errors = require('feathers-errors');
 //const utils = require('feathers-hooks-utils');
-const utils = require('feathers-hooks-common/lib/utils');
+const utils = require('feathers-hooks-common/lib/services');
 const joiErrorsForForms = require('joi-errors-for-forms');
 
 function validator(joiSchema, joiOptions, translator, ifTest) {
