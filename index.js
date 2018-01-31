@@ -2,8 +2,7 @@
 /* eslint comma-dangle: 0, object-shorthand: 0, prefer-arrow-callback: 0*/ /* ES5 code */
 
 const Joi = require('joi');
-const errors = require('feathers-errors');
-//const utils = require('feathers-hooks-utils');
+const errors = require('@feathersjs/errors');
 const utils = require('feathers-hooks-common/lib/services');
 const joiErrorsForForms = require('joi-errors-for-forms');
 
