@@ -4,7 +4,7 @@
  prefer-arrow-callback: 0 */ /* ES5 code */
 
 const assert = require('chai').assert;
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 const validate = require('../index');
 
 const Joi = require('joi');
