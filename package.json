@@ -1,6 +1,6 @@
 {
   "name": "feathers-hooks-validate-joi",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Feathers hook utility for schema validation, sanitization and client notification using Joi.",
   "main": "index.js",
   "scripts": {
@@ -28,12 +28,13 @@
   },
   "homepage": "https://github.com/eddyystop/feathers-hooks-validate-joi#readme",
   "dependencies": {
-    "feathers-errors": "2.5.0",
-    "feathers-hooks-common": "^3.6.1",
+    "@feathersjs/errors": "^3.2.2",
+    "feathers-hooks-common": "^4.3.0",
     "joi": "^10.6.0",
     "joi-errors-for-forms": "^0.2.2"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.1",
     "chai": "3.5.0",
     "coveralls": "2.11.9",
     "eslint": "3.0.1",
