@@ -45,6 +45,14 @@ describe('valid values', () => {
         done();
       });
     });
+
+    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
+      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
+        assert.equal(err, null);
+        assert.deepEqual(hook.data, converted);
+        done();
+      });
+    });
   });
 
   describe('update hook', () => {
@@ -69,6 +77,14 @@ describe('valid values', () => {
         done();
       });
     });
+
+    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
+      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
+        assert.equal(err, null);
+        assert.deepEqual(hook.data, converted);
+        done();
+      });
+    });
   });
 
   describe('patch hook', () => {
@@ -88,6 +104,14 @@ describe('valid values', () => {
       joiOptions.convert = true;
 
       validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
+        assert.equal(err, null);
+        assert.deepEqual(hook.data, converted);
+        done();
+      });
+    });
+
+    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
+      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
         assert.equal(err, null);
         assert.deepEqual(hook.data, converted);
         done();
