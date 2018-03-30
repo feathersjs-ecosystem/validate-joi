@@ -62,18 +62,19 @@ const errsTypeMongoose = {
 };
 
 describe('invalid joiOptions', function () {
-  it('does not handle when it is empty', function (done) {
+  it('throws on error. joiOptions is optional but must be an object', function (done) {
     const values = { name: 'a1234567z', password: '123456789', confirmPassword: '123456789' };
     const hook = { type: 'before', method: 'create', data: values };
 
     const fcn = () => {
-      validate.form(schema, undefined, undefined, true)(hook, function () {
+      const joiOptions = 2;
+      validate.form(schema, joiOptions, undefined, true)(hook, function () {
         assert(false, 'validate.form callback unexpectedly called');
         done();
       });
     };
 
-    assert.throws(fcn, 'Cannot read property \'convert\' of undefined');
+    assert.throws(fcn, '"value" must be an object');
     done();
   });
 });
