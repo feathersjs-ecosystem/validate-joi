@@ -1,6 +1,6 @@
 {
   "name": "feathers-hooks-validate-joi",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Feathers hook utility for schema validation, sanitization and client notification using Joi.",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,9 @@
     "joi"
   ],
   "author": "John Szwaronek <johnsz9999@gmail.com>",
+  "contributors": [
+    "Luis A. Salas <betinho8901@gmail.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/eddyystop/feathers-hooks-validate-joi/issues"

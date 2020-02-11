@@ -23,7 +23,10 @@ function validator(joiSchema, joiOptions, translator, ifTest) {
         if (!joiOptions || joiOptions.convert === true) {
           utils.replaceItems(hook, convertedValues);
         }
-        next(null, hook);
+        
+        if (typeof next === 'function') {
+          next(null, hook);
+        }
       }
     );
   };
