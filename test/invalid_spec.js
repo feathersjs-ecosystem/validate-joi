@@ -45,7 +45,7 @@ const errsTypeMongoose = {
     message: '"name" must consist of letters, digits or spaces.',
     name: 'ValidatorError',
     path: 'name',
-    type: 'string.regex.base'
+    type: 'string.pattern.base'
   },
   password: {
     message: '"password" must be 2 or more chars.',
@@ -62,63 +62,77 @@ const errsTypeMongoose = {
 };
 
 describe('invalid joiOptions', function () {
-  it('throws on error. joiOptions is optional but must be an object', function (done) {
+  it('joiOptions is optional', function (done) {
     const values = { name: 'a1234567z', password: '123456789', confirmPassword: '123456789' };
-    const hook = { type: 'before', method: 'create', data: values };
+    const context = { type: 'before', method: 'create', data: values };
 
-    const fcn = () => {
-      const joiOptions = 2;
-      validate.form(schema, joiOptions, undefined, true)(hook, function () {
-        assert(false, 'validate.form callback unexpectedly called');
-        done();
-      });
-    };
+    const joiOptions = undefined;
+    const validateWithJoi = validate.form(schema, joiOptions, undefined, true);
 
-    assert.throws(fcn, '"value" must be an object');
-    done();
+    validateWithJoi(context, function () {
+      assert(true, 'joiOptions can be undefined');
+      done();
+    });
+  });
+
+  it('joiOptions cannot be invalid', function (done) {
+    const joiOptions = 2;
+    try {
+      validate.form(schema, joiOptions, undefined, true);
+
+      assert(false, 'validate.form should have errored with bad options.');
+      done();
+    } catch (error) {
+      assert.strictEqual(error.message, 'joiOptions must be a valid object.', error.message);
+      done();
+    }
   });
 });
 
 describe('invalid data - form UI', () => {
-  var joiOptions, valuesBad, hookBad; // eslint-disable-line no-var
+  var joiOptions, valuesBad, contextBad; // eslint-disable-line no-var
 
   beforeEach(function () {
     joiOptions = { abortEarly: false };
     valuesBad = { name: 'j', password: 'z', confirmPassword: 'z' };
-    hookBad = { type: 'before', method: 'create', data: valuesBad };
+    contextBad = { type: 'before', method: 'create', data: valuesBad };
   });
 
-  it('throws on error. default is 1 message, no translation', (done) => {
+  it('throws on error. default is 1 message, no translation', async () => {
     joiOptions = {};
 
-    const fcn = () => {
-      validate.form(schema, joiOptions, undefined, true)(hookBad, function () {
+    try {
+      const validateWithJoi = validate.form(schema, joiOptions, undefined, true);
+      const responseContext = await validateWithJoi(contextBad, function () {
         assert(false, 'validate.form callback unexpectedly called');
-        done();
       });
-    };
-
-    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsRaw.name));
-    done();
+      assert(!responseContext, 'should not have succeeded');
+    } catch (error) {
+      const message = JSON.parse(error.message);
+      assert.strictEqual(message.name, errsRaw.name);
+    }
   });
 
-  it('throws on error. return all messages, no translation', (done) => {
-    const fcn = () => {
-      validate.form(schema, joiOptions, undefined, true)(hookBad, function () {
+  it('throws on error. return all messages, no translation', async () => {
+    try {
+      const validateWithJoi = validate.form(schema, joiOptions, undefined, true);
+      const responseContext = await validateWithJoi(contextBad, function () {
         assert(false, 'validate.form callback unexpectedly called');
-        done();
       });
-    };
-
-    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsRaw));
-    done();
+      assert(!responseContext, 'should not have succeeded');
+    } catch (error) {
+      const message = JSON.parse(error.message);
+      assert.deepEqual(message, errsRaw);
+    }
   });
 
-  it('throws on error. translate by type', (done) => {
+  it.only('throws on error. translate by type', async () => {
     const translations = {
-      'string.min': function () { return '"${key}" must be ${limit} or more chars.'; },
-      'string.regex.base': function (context) {
-        switch (context.pattern.toString()) {
+      'string.min': function () {
+        return '"${key}" must be ${limit} or more chars.';
+      },
+      'string.pattern.base': function (context) {
+        switch (context.regex.toString()) {
           case /^[\sa-zA-Z0-9]{5,30}$/.toString():
             return '"${key}" must consist of letters, digits or spaces.';
           default:
@@ -127,22 +141,23 @@ describe('invalid data - form UI', () => {
       }
     };
 
-    const fcn = () => {
-      validate.form(schema, joiOptions, translations, true)(hookBad, function () {
+    try {
+      const validateWithJoi = validate.form(schema, joiOptions, translations, true);
+      const responseContext = await validateWithJoi(contextBad, function () {
         assert(false, 'validate.form callback unexpectedly called');
-        done();
       });
-    };
-
-    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsType));
-    done();
+      assert(!responseContext, 'should not have succeeded');
+    } catch (error) {
+      const message = JSON.parse(error.message);
+      assert.deepEqual(message, errsType);
+    }
   });
 
   it('throws on error. translate generic', (done) => {
     const translations = '"${key}" is badly formed.';
 
     const fcn = () => {
-      validate.form(schema, joiOptions, translations, true)(hookBad, function () {
+      validate.form(schema, joiOptions, translations, true)(contextBad, function () {
         assert(false, 'validate.form callback unexpectedly called');
         done();
       });
@@ -163,7 +178,7 @@ describe('invalid data - form UI', () => {
     ];
 
     const fcn = () => {
-      validate.form(schema, joiOptions, translations, true)(hookBad, function () {
+      validate.form(schema, joiOptions, translations, true)(contextBad, function () {
         assert(false, 'validate.form callback unexpectedly called');
         done();
       });
@@ -176,19 +191,19 @@ describe('invalid data - form UI', () => {
 
 
 describe('invalid data - Mongoose', () => {
-  var joiOptions, valuesBad, hookBad; // eslint-disable-line no-var
+  var joiOptions, valuesBad, contextBad; // eslint-disable-line no-var
 
   beforeEach(function () {
     joiOptions = { abortEarly: false };
 
     valuesBad = { name: 'j', password: 'z', confirmPassword: 'z' };
-    hookBad = { type: 'before', method: 'create', data: valuesBad };
+    contextBad = { type: 'before', method: 'create', data: valuesBad };
   });
 
   it('throws on error. translate by type', (done) => {
     const translations = {
       'string.min': function () { return '"${key}" must be ${limit} or more chars.'; },
-      'string.regex.base': function (context) {
+      'string.pattern.base': function (context) {
         switch (context.pattern.toString()) {
           case /^[\sa-zA-Z0-9]{5,30}$/.toString():
             return '"${key}" must consist of letters, digits or spaces.';
@@ -199,7 +214,7 @@ describe('invalid data - Mongoose', () => {
     };
 
     const fcn = () => {
-      validate.mongoose(schema, joiOptions, translations, true)(hookBad, function () {
+      validate.mongoose(schema, joiOptions, translations, true)(contextBad, function () {
         assert(false, 'validate.mongoose callback unexpectedly called');
         done();
       });
