@@ -14,8 +14,8 @@ const schema = Joi.object().keys({
   confirmPassword: password.label('Confirm password'),
 });
 
-describe('valid values', () => {
-  var joiOptions, values, converted, hook; // eslint-disable-line no-var
+describe.only('valid values', () => {
+  var joiOptions, values, converted, context; // eslint-disable-line no-var
 
   beforeEach(function () {
     joiOptions = { abortEarly: false };
@@ -25,31 +25,47 @@ describe('valid values', () => {
 
   describe('before hook', () => {
     beforeEach(function () {
-      hook = { type: 'before', method: 'create', data: values };
+      context = { type: 'before', method: 'create', data: values };
     });
 
-    it('does not convert if convert=false', (done) => {
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, values);
-        done();
-      });
+    it.only('still works with callback syntax', async () => {
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context, function (err, context) {
+          assert.equal(err, null);
+          assert.deepEqual(context.data, values);
+        });
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
+    });
+
+    it('does not convert if convert=false', async () => {
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context, function (err, context) {
+          assert.equal(err, null);
+          assert.deepEqual(context.data, values);
+        });
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
 
     it('does convert if convert=true', (done) => {
       joiOptions.convert = true;
 
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
+      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
+        assert.deepEqual(context.data, converted);
         done();
       });
     });
 
     it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
+      validate.form(schema, undefined, undefined)(context, function (err, context) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
+        assert.deepEqual(context.data, converted);
         done();
       });
     });
@@ -57,13 +73,13 @@ describe('valid values', () => {
 
   describe('update hook', () => {
     beforeEach(function () {
-      hook = { type: 'before', method: 'update', data: values };
+      context = { type: 'before', method: 'update', data: values };
     });
 
     it('does not convert if convert=false', (done) => {
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
+      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data, values);
+        assert.deepEqual(context.data, values);
         done();
       });
     });
@@ -71,17 +87,17 @@ describe('valid values', () => {
     it('does convert if convert=true', (done) => {
       joiOptions.convert = true;
 
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
+      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
+        assert.deepEqual(context.data, converted);
         done();
       });
     });
 
     it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
+      validate.form(schema, undefined, undefined)(context, function (err, context) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
+        assert.deepEqual(context.data, converted);
         done();
       });
     });
@@ -89,13 +105,13 @@ describe('valid values', () => {
 
   describe('patch hook', () => {
     beforeEach(function () {
-      hook = { type: 'before', method: 'patch', data: values };
+      context = { type: 'before', method: 'patch', data: values };
     });
 
     it('does not convert if convert=false', (done) => {
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
+      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data, values);
+        assert.deepEqual(context.data, values);
         done();
       });
     });
@@ -103,17 +119,17 @@ describe('valid values', () => {
     it('does convert if convert=true', (done) => {
       joiOptions.convert = true;
 
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
+      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
+        assert.deepEqual(context.data, converted);
         done();
       });
     });
 
     it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
+      validate.form(schema, undefined, undefined)(context, function (err, context) {
         assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
+        assert.deepEqual(context.data, converted);
         done();
       });
     });
