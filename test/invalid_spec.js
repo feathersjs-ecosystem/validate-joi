@@ -15,25 +15,25 @@ const schema = Joi.object().keys({
   confirmPassword: password.label('Confirm password'),
 });
 
-const errsRaw = {
+const errorsNoTranslation = {
   name: '"name" with value "J" fails to match the required pattern: /^[\\sa-zA-Z0-9]{5,30}$/',
   password: '"password" length must be at least 2 characters long',
-  confirmPassword: '"confirmPassword" length must be at least 2 characters long'
+  confirmPassword: '"Confirm password" length must be at least 2 characters long'
 };
 
-const errsType = {
+const errsTranslateByType = {
   name: '"name" must consist of letters, digits or spaces.',
   password: '"password" must be 2 or more chars.',
   confirmPassword: '"confirmPassword" must be 2 or more chars.'
 };
 
-const errsGeneric = {
+const errorsTranslateGeneric = {
   name: '"name" is badly formed.',
   password: '"password" is badly formed.',
   confirmPassword: '"confirmPassword" is badly formed.'
 };
 
-const errsSubstr = {
+const errorsTranslateSubstring = {
   name: '"name" is badly formed.',
   password: '"password" must be 2 or more chars.',
   confirmPassword: '"confirmPassword" must be 2 or more chars.'
@@ -108,7 +108,7 @@ describe('invalid data - form UI', () => {
       assert(!responseContext, 'should not have succeeded');
     } catch (error) {
       const message = JSON.parse(error.message);
-      assert.strictEqual(message.name, errsRaw.name);
+      assert.strictEqual(message.name, errorsNoTranslation.name);
     }
   });
 
@@ -121,11 +121,11 @@ describe('invalid data - form UI', () => {
       assert(!responseContext, 'should not have succeeded');
     } catch (error) {
       const message = JSON.parse(error.message);
-      assert.deepEqual(message, errsRaw);
+      assert.deepEqual(message, errorsNoTranslation);
     }
   });
 
-  it.only('throws on error. translate by type', async () => {
+  it('throws on error. translate by type', async () => {
     const translations = {
       'string.min': function () {
         return '"${key}" must be ${limit} or more chars.';
@@ -148,7 +148,7 @@ describe('invalid data - form UI', () => {
       assert(!responseContext, 'should not have succeeded');
     } catch (error) {
       const message = JSON.parse(error.message);
-      assert.deepEqual(message, errsType);
+      assert.deepEqual(message, errsTranslateByType);
     }
   });
 
