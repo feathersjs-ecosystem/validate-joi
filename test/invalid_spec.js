@@ -43,19 +43,19 @@ const errsTypeMongoose = {
   name: {
     message: '"name" must consist of letters, digits or spaces.',
     name: 'ValidatorError',
-    path: 'name',
+    path: ['name'],
     type: 'string.pattern.base'
   },
   password: {
     message: '"password" must be 2 or more chars.',
     name: 'ValidatorError',
-    path: 'password',
+    path: ['password'],
     type: 'string.min'
   },
   confirmPassword: {
-    message: '"Confirm password" must be 2 or more chars.',
+    message: '"confirmPassword" must be 2 or more chars.',
     name: 'ValidatorError',
-    path: 'confirmPassword',
+    path: ['confirmPassword'],
     type: 'string.min'
   }
 };
@@ -201,11 +201,11 @@ describe('invalid data - Mongoose', () => {
     contextBad = { type: 'before', method: 'create', data: valuesBad };
   });
 
-  it('throws on error. translate by type', (done) => {
+  it('throws on error. translate by type', async () => {
     const translations = {
       'string.min': function () { return '"${key}" must be ${limit} or more chars.'; },
       'string.pattern.base': function (context) {
-        switch (context.pattern.toString()) {
+        switch (context.regex.toString()) {
           case /^[\sa-zA-Z0-9]{5,30}$/.toString():
             return '"${key}" must consist of letters, digits or spaces.';
           default:
@@ -214,14 +214,15 @@ describe('invalid data - Mongoose', () => {
       }
     };
 
-    const fcn = () => {
-      validate.mongoose(schema, joiOptions, translations, true)(contextBad, function () {
+    try {
+      const validateWithJoi = validate.mongoose(schema, joiOptions, translations, true);
+      const responseContext = await validateWithJoi(contextBad, function () {
         assert(false, 'validate.mongoose callback unexpectedly called');
-        done();
       });
-    };
-
-    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsTypeMongoose));
-    done();
+      assert(!responseContext, 'should not have succeeded');
+    } catch (error) {
+      const message = JSON.parse(error.message);
+      assert.deepEqual(message, errsTypeMongoose);
+    }
   });
 });
