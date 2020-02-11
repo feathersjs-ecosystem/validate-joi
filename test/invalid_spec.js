@@ -152,21 +152,22 @@ describe('invalid data - form UI', () => {
     }
   });
 
-  it('throws on error. translate generic', (done) => {
+  it('throws on error. translate generic', async () => {
     const translations = '"${key}" is badly formed.';
 
-    const fcn = () => {
-      validate.form(schema, joiOptions, translations, true)(contextBad, function () {
+    try {
+      const validateWithJoi = validate.form(schema, joiOptions, translations, true);
+      const responseContext = await validateWithJoi(contextBad, function () {
         assert(false, 'validate.form callback unexpectedly called');
-        done();
       });
-    };
-
-    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsGeneric));
-    done();
+      assert(!responseContext, 'should not have succeeded');
+    } catch (error) {
+      const message = JSON.parse(error.message);
+      assert.deepEqual(message, errorsTranslateGeneric);
+    }
   });
 
-  it('throws on error. translate using substrings', (done) => {
+  it('throws on error. translate using substrings', async () => {
     const translations = [
       { regex: 'at least 2 characters long',
         message: '"${key}" must be 2 or more chars.'
@@ -176,15 +177,16 @@ describe('invalid data - form UI', () => {
       }
     ];
 
-    const fcn = () => {
-      validate.form(schema, joiOptions, translations, true)(contextBad, function () {
+    try {
+      const validateWithJoi = validate.form(schema, joiOptions, translations, true);
+      const responseContext = await validateWithJoi(contextBad, function () {
         assert(false, 'validate.form callback unexpectedly called');
-        done();
       });
-    };
-
-    assert.throws(fcn, errors.BadRequest, JSON.stringify(errsSubstr));
-    done();
+      assert(!responseContext, 'should not have succeeded');
+    } catch (error) {
+      const message = JSON.parse(error.message);
+      assert.deepEqual(message, errorsTranslateSubstring);
+    }
   });
 });
 
