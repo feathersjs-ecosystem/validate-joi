@@ -61,6 +61,24 @@ const errsTypeMongoose = {
   }
 };
 
+describe('invalid joiOptions', function () {
+  it('throws on error. joiOptions is optional but must be an object', function (done) {
+    const values = { name: 'a1234567z', password: '123456789', confirmPassword: '123456789' };
+    const hook = { type: 'before', method: 'create', data: values };
+
+    const fcn = () => {
+      const joiOptions = 2;
+      validate.form(schema, joiOptions, undefined, true)(hook, function () {
+        assert(false, 'validate.form callback unexpectedly called');
+        done();
+      });
+    };
+
+    assert.throws(fcn, '"value" must be an object');
+    done();
+  });
+});
+
 describe('invalid data - form UI', () => {
   var joiOptions, valuesBad, hookBad; // eslint-disable-line no-var
 

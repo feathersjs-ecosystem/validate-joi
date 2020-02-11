@@ -20,7 +20,7 @@ function validator(joiSchema, joiOptions, translator, ifTest) {
           throw new errors.BadRequest(msg, { errors: formErrors });
         }
 
-        if (joiOptions.convert === true) {
+        if (!joiOptions || joiOptions.convert === true) {
           utils.replaceItems(hook, convertedValues);
         }
         next(null, hook);
