@@ -9,7 +9,7 @@ and optionally translated for clarity or internationalization.
 ## Code Example
 
 ```javascript
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const validate = require('feathers-hooks-validate-joi');
 
 const name = Joi.string().trim().min(5).max(30)

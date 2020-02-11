@@ -7,7 +7,7 @@ const assert = require('chai').assert;
 const errors = require('@feathersjs/errors');
 const validate = require('../index');
 
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const name = Joi.string().trim().regex(/^[\sa-zA-Z0-9]{5,30}$/).required();
 const password = Joi.string().trim().min(2).max(30).required();
 const schema = Joi.object().keys({

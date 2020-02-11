@@ -32,8 +32,8 @@
   "homepage": "https://github.com/eddyystop/feathers-hooks-validate-joi#readme",
   "dependencies": {
     "@feathersjs/errors": "^3.2.2",
+    "@hapi/joi": "^17.1.0",
     "feathers-hooks-common": "^4.3.0",
-    "joi": "^10.6.0",
     "joi-errors-for-forms": "^0.2.2"
   },
   "devDependencies": {
