@@ -33,7 +33,7 @@
   "dependencies": {
     "@feathersjs/errors": "^3.2.2",
     "@hapi/joi": "^17.1.0",
-    "feathers-hooks-common": "^4.3.0",
+    "feathers-hooks-common": "^5.0.2",
     "joi-errors-for-forms": "^0.2.2"
   },
   "devDependencies": {
