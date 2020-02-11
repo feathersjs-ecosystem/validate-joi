@@ -19,25 +19,25 @@ const schema = Joi.object().keys({
 const errsRaw = {
   name: '"name" with value "J" fails to match the required pattern: /^[\\sa-zA-Z0-9]{5,30}$/',
   password: '"password" length must be at least 2 characters long',
-  confirmPassword: '"Confirm password" length must be at least 2 characters long'
+  confirmPassword: '"confirmPassword" length must be at least 2 characters long'
 };
 
 const errsType = {
   name: '"name" must consist of letters, digits or spaces.',
   password: '"password" must be 2 or more chars.',
-  confirmPassword: '"Confirm password" must be 2 or more chars.'
+  confirmPassword: '"confirmPassword" must be 2 or more chars.'
 };
 
 const errsGeneric = {
   name: '"name" is badly formed.',
   password: '"password" is badly formed.',
-  confirmPassword: '"Confirm password" is badly formed.'
+  confirmPassword: '"confirmPassword" is badly formed.'
 };
 
 const errsSubstr = {
   name: '"name" is badly formed.',
   password: '"password" must be 2 or more chars.',
-  confirmPassword: '"Confirm password" must be 2 or more chars.'
+  confirmPassword: '"confirmPassword" must be 2 or more chars.'
 };
 
 const errsTypeMongoose = {
