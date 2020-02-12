@@ -1,16 +1,24 @@
-## feathers-hooks-validate-joi
+## validate-joi
 Feathers hook utility for schema validation and sanitization using Joi.
 Joi error messages are converted to web/mobile friendly formats,
 and optionally translated for clarity or internationalization.
 
-[![Build Status](https://travis-ci.org/eddyystop/feathers-hooks-validate-joi.svg?branch=master)](https://travis-ci.org/eddyystop/feathers-hooks-validate-joi)
-[![Coverage Status](https://coveralls.io/repos/github/eddyystop/feathers-hooks-validate-joi/badge.svg?branch=master)](https://coveralls.io/github/eddyystop/feathers-hooks-validate-joi?branch=master)
+[![Build Status](https://travis-ci.org/feathers-plus/validate-joi.svg?branch=master)](https://travis-ci.org/feathers-plus/validate-joi)
+[![Coverage Status](https://coveralls.io/repos/github/feathers-plus/validate-joi/badge.svg?branch=master)](https://coveralls.io/github/feathers-plus/validate-joi?branch=master)
 
-## Code Example
+## Installation
 
-```javascript
-const Joi = require('joi');
-const validate = require('feathers-hooks-validate-joi');
+```
+npm install @feathers-plus/validate-joi --save
+
+yarn add @feathers-plus/validat-joi
+```
+
+## Usage Example
+
+```js
+const Joi = require('@hapi/joi');
+const validate = require('@feathers-plus/validate-joi');
 
 const name = Joi.string().trim().min(5).max(30)
   .regex(/^[\sa-zA-Z0-9]$/, 'letters, numbers and spaces').required();
@@ -24,23 +32,22 @@ const joiOptions = { convert: true, abortEarly: false };
 ```
 
 (1) Validate sanitize data. The client receives any errors in a 
-[format suitable for forms](https://github.com/eddyystop/joi-errors-for-forms#code-examples)
+[format suitable for forms](https://github.com/feathers-plus/joi-errors-for-forms#code-examples)
 which also seems to be
 [recommend by Feathers](http://docs.feathersjs.com/middleware/error-handling.html#featherserror-api).
 
-```javascript
+```js
 export.before = {
   create: [ validate.form(schema, joiOptions) ],
   update: [ validate.form(schema, joiOptions) ],
   patch: [ validate.form(schema, joiOptions) ]
 };
-
 ```
 
 (2) Errors are returned in a 
-    [Mongoose format.](https://github.com/eddyystop/joi-errors-for-forms#code-examples)
+    [Mongoose format.](https://github.com/feathers-plus/joi-errors-for-forms#code-examples)
 
-```javascript
+```js
 export.before = {
   create: [ validate.mongoose(schema, joiOptions) ],
   update: [ validate.mongoose(schema, joiOptions) ],
@@ -50,7 +57,7 @@ export.before = {
 
 (3) Internationalize or clarify Joi error messages.
 
-```javascript
+```js
 function i18n(str) { return str; } // internationalization
 
 const translations = {
@@ -81,14 +88,6 @@ The client must be informed of any errors using a schema friendly to web/mobile 
 This repo helps implement this in [Feathers](http://feathersjs.com/) CRUD
 [hooks](http://docs.feathersjs.com/hooks/readme.html).
 
-## Installation
-
-Install [Nodejs](https://nodejs.org/en/).
-
-Run `npm install feathers-hooks-validate-joi --save` in your project folder.
-
-You can then require the utilities.
-
 ## API Reference
 
 To do.
@@ -109,7 +108,7 @@ in bulk.
 
 You can then internationalize your field names and regex descriptions in the schema, e.g.
 
-```javascript
+```js
 Joi.string().regex(/^[\sa-zA-Z0-9]$/, i18n('letters, number and spaces')).label(i18n('Confirm password'))
 ```
 
@@ -117,7 +116,7 @@ These are suitable methods to internationalize the majority of Joi error message
 
 ## Contributors
 
-- [eddyystop](https://github.com/eddyystop)
+- [eddyystop](https://github.com/feathers-plus)
 
 ## License
 

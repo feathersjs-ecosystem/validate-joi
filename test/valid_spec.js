@@ -5,7 +5,7 @@ one-var-declaration-per-line: 0, prefer-arrow-callback: 0 */ /* ES5 code */
 const assert = require('chai').assert;
 const validate = require('../index');
 
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const name = Joi.string().trim().regex(/^[\sa-zA-Z0-9]{5,30}$/).required();
 const password = Joi.string().trim().min(2).max(30).required();
 const schema = Joi.object().keys({
@@ -15,7 +15,7 @@ const schema = Joi.object().keys({
 });
 
 describe('valid values', () => {
-  var joiOptions, values, converted, hook; // eslint-disable-line no-var
+  var joiOptions, values, converted, context; // eslint-disable-line no-var
 
   beforeEach(function () {
     joiOptions = { abortEarly: false };
@@ -25,97 +25,131 @@ describe('valid values', () => {
 
   describe('before hook', () => {
     beforeEach(function () {
-      hook = { type: 'before', method: 'create', data: values };
+      context = { type: 'before', method: 'create', data: values };
     });
 
-    it('does not convert if convert=false', (done) => {
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, values);
-        done();
-      });
+    it('still works with callback syntax', async () => {
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context, function (err, context) {
+          assert.equal(err, null);
+          assert.deepEqual(context.data, values);
+        });
+        assert(responseContext);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
 
-    it('does convert if convert=true', (done) => {
-      joiOptions.convert = true;
-
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
-        done();
-      });
+    it('does not convert if convert === false', async () => {
+      const joiOptions = { convert: false, abortEarly: false };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert(!responseContext, 'should have failed due to name requiring uppercase');
+      } catch (error) {
+        assert.strictEqual(error.errors.name, '"name" must only contain uppercase characters');
+      }
     });
 
-    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
-        done();
-      });
+    it('does convert if convert === true', async () => {
+      const joiOptions = { convert: true };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
+    });
+
+    it('converts by default', async () => {
+      const joiOptions = {};
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
   });
 
   describe('update hook', () => {
     beforeEach(function () {
-      hook = { type: 'before', method: 'update', data: values };
+      context = { type: 'before', method: 'update', data: values };
     });
 
-    it('does not convert if convert=false', (done) => {
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, values);
-        done();
-      });
+    it('does not convert if convert === false', async () => {
+      const joiOptions = { convert: false, abortEarly: false };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert(!responseContext, 'should have failed due to name requiring uppercase');
+      } catch (error) {
+        assert.strictEqual(error.errors.name, '"name" must only contain uppercase characters');
+      }
     });
 
-    it('does convert if convert=true', (done) => {
-      joiOptions.convert = true;
-
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
-        done();
-      });
+    it('does convert if convert === true', async () => {
+      const joiOptions = { convert: true };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
 
-    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
-        done();
-      });
+    it('converts by default', async () => {
+      const joiOptions = {};
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
   });
 
   describe('patch hook', () => {
     beforeEach(function () {
-      hook = { type: 'before', method: 'patch', data: values };
+      context = { type: 'before', method: 'patch', data: values };
     });
 
-    it('does not convert if convert=false', (done) => {
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, values);
-        done();
-      });
+    it('does not convert if convert === false', async () => {
+      const joiOptions = { convert: false, abortEarly: false };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert(!responseContext, 'should have failed due to name requiring uppercase');
+      } catch (error) {
+        assert.strictEqual(error.errors.name, '"name" must only contain uppercase characters');
+      }
     });
 
-    it('does convert if convert=true', (done) => {
-      joiOptions.convert = true;
-
-      validate.form(schema, joiOptions, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
-        done();
-      });
+    it('does convert if convert === true', async () => {
+      const joiOptions = { convert: true };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
 
-    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(hook, function (err, hook) {
-        assert.equal(err, null);
-        assert.deepEqual(hook.data, converted);
-        done();
-      });
+    it('converts by default', async () => {
+      const joiOptions = {};
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
   });
 });

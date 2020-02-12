@@ -1,19 +1,24 @@
 {
-  "name": "feathers-hooks-validate-joi",
-  "version": "2.1.0",
-  "description": "Feathers hook utility for schema validation, sanitization and client notification using Joi.",
+  "name": "@feathers-plus/validate-joi",
+  "version": "3.0.0",
+  "description": "Feathers hook utility for schema validation, sanitization, and client notification using Joi.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js,.jsx .",
     "test": "mocha --reporter spec",
-    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
+    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*",
+    "publish": "git push origin --tags && git push origin",
+    "release:pre": "npm version prerelease && npm publish --tag pre",
+    "release:patch": "npm version patch && npm publish --access public",
+    "release:minor": "npm version minor && npm publish --access public",
+    "release:major": "npm version major && npm publish --access public"
   },
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eddyystop/feathers-hooks-validate-joi.git"
+    "url": "git+https://github.com/feathers-plus/validate-joi.git"
   },
   "keywords": [
     "feathers",
@@ -30,26 +35,26 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/eddyystop/feathers-hooks-validate-joi/issues"
+    "url": "https://github.com/feathers-plus/validate-joi/issues"
   },
-  "homepage": "https://github.com/eddyystop/feathers-hooks-validate-joi#readme",
+  "homepage": "https://github.com/feathers-plus/validate-joi#readme",
   "dependencies": {
-    "@feathersjs/errors": "^3.2.2",
-    "feathers-hooks-common": "^4.3.0",
-    "joi": "^10.6.0",
+    "@feathersjs/errors": "^4.5.1",
+    "@hapi/joi": "^17.1.0",
+    "feathers-hooks-common": "^5.0.2",
     "joi-errors-for-forms": "^0.2.2"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.1",
-    "chai": "3.5.0",
-    "coveralls": "2.11.9",
-    "eslint": "3.0.1",
-    "eslint-config-airbnb": "9.0.1",
-    "eslint-plugin-import": "1.10.2",
-    "eslint-plugin-jsx-a11y": "1.5.5",
-    "eslint-plugin-react": "5.2.2",
-    "istanbul": "0.4.4",
-    "mocha": "2.5.3"
+    "babel-eslint": "^10.0.3",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.9",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.0.1",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.18.3",
+    "istanbul": "^0.4.5",
+    "mocha": "^7.0.1"
   },
   "engines": {
     "node": ">4.2.4"
