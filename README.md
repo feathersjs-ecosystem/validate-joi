@@ -6,6 +6,15 @@ and optionally translated for clarity or internationalization.
 [![Build Status](https://travis-ci.org/feathers-plus/validate-joi.svg?branch=master)](https://travis-ci.org/feathers-plus/validate-joi)
 [![Coverage Status](https://coveralls.io/repos/github/feathers-plus/validate-joi/badge.svg?branch=master)](https://coveralls.io/github/feathers-plus/validate-joi?branch=master)
 
+## New in Version 3.0
+
+- 🙌 Updated to work with latest `@hapi/joi`.
+- 🎁 Support for asynchronous validations.
+- 🚀 Support for FeathersJS V4.
+- 🤷‍♂️ It might still support FeathersJS V3, because the callback syntax is still supported.
+
+Since `Joi.validate()` has been removed, all validations now use `schema.validateAsync()`, which means this package now supports asynchronous validations.
+
 ## Installation
 
 ```
