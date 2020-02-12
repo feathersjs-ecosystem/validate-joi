@@ -1,4 +1,4 @@
-## @feathers-plus/validate-joi
+# @feathers-plus/validate-joi
 Feathers hook utility for schema validation and sanitization using Joi.
 Joi error messages are converted to web/mobile friendly formats,
 and optionally translated for clarity or internationalization.
