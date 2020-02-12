@@ -1,10 +1,10 @@
-## feathers-hooks-validate-joi
+## validate-joi
 Feathers hook utility for schema validation and sanitization using Joi.
 Joi error messages are converted to web/mobile friendly formats,
 and optionally translated for clarity or internationalization.
 
-[![Build Status](https://travis-ci.org/feathers-plus/feathers-hooks-validate-joi.svg?branch=master)](https://travis-ci.org/feathers-plus/feathers-hooks-validate-joi)
-[![Coverage Status](https://coveralls.io/repos/github/feathers-plus/feathers-hooks-validate-joi/badge.svg?branch=master)](https://coveralls.io/github/feathers-plus/feathers-hooks-validate-joi?branch=master)
+[![Build Status](https://travis-ci.org/feathers-plus/validate-joi.svg?branch=master)](https://travis-ci.org/feathers-plus/validate-joi)
+[![Coverage Status](https://coveralls.io/repos/github/feathers-plus/validate-joi/badge.svg?branch=master)](https://coveralls.io/github/feathers-plus/validate-joi?branch=master)
 
 ## Installation
 

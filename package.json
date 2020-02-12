@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/feathers-plus/feathers-hooks-validate-joi.git"
+    "url": "git+https://github.com/feathers-plus/validate-joi.git"
   },
   "keywords": [
     "feathers",
@@ -32,9 +32,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/feathers-plus/feathers-hooks-validate-joi/issues"
+    "url": "https://github.com/feathers-plus/validate-joi/issues"
   },
-  "homepage": "https://github.com/feathers-plus/feathers-hooks-validate-joi#readme",
+  "homepage": "https://github.com/feathers-plus/validate-joi#readme",
   "dependencies": {
     "@feathersjs/errors": "^4.5.1",
     "@hapi/joi": "^17.1.0",
