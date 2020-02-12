@@ -14,7 +14,7 @@ const schema = Joi.object().keys({
   confirmPassword: password.label('Confirm password'),
 });
 
-describe.only('valid values', () => {
+describe('valid values', () => {
   var joiOptions, values, converted, context; // eslint-disable-line no-var
 
   beforeEach(function () {
@@ -53,7 +53,7 @@ describe.only('valid values', () => {
     });
 
     it('does convert if convert === true', async () => {
-      const joiOptions = { convert: true, abortEarly: false };
+      const joiOptions = { convert: true };
       try {
         const validateWithJoi = validate.form(schema, joiOptions, undefined);
         const responseContext = await validateWithJoi(context);
@@ -63,12 +63,15 @@ describe.only('valid values', () => {
       }
     });
 
-    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(context, function (err, context) {
-        assert.equal(err, null);
-        assert.deepEqual(context.data, converted);
-        done();
-      });
+    it('converts by default', async () => {
+      const joiOptions = {};
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
   });
 
@@ -77,30 +80,37 @@ describe.only('valid values', () => {
       context = { type: 'before', method: 'update', data: values };
     });
 
-    it('does not convert if convert=false', (done) => {
-      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
-        assert.equal(err, null);
-        assert.deepEqual(context.data, values);
-        done();
-      });
+    it('does not convert if convert === false', async () => {
+      const joiOptions = { convert: false, abortEarly: false };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert(!responseContext, 'should have failed due to name requiring uppercase');
+      } catch (error) {
+        assert.strictEqual(error.errors.name, '"name" must only contain uppercase characters');
+      }
     });
 
-    it('does convert if convert=true', (done) => {
-      joiOptions.convert = true;
-
-      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
-        assert.equal(err, null);
-        assert.deepEqual(context.data, converted);
-        done();
-      });
+    it('does convert if convert === true', async () => {
+      const joiOptions = { convert: true };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
 
-    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(context, function (err, context) {
-        assert.equal(err, null);
-        assert.deepEqual(context.data, converted);
-        done();
-      });
+    it('converts by default', async () => {
+      const joiOptions = {};
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
   });
 
@@ -109,30 +119,37 @@ describe.only('valid values', () => {
       context = { type: 'before', method: 'patch', data: values };
     });
 
-    it('does not convert if convert=false', (done) => {
-      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
-        assert.equal(err, null);
-        assert.deepEqual(context.data, values);
-        done();
-      });
+    it('does not convert if convert === false', async () => {
+      const joiOptions = { convert: false, abortEarly: false };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert(!responseContext, 'should have failed due to name requiring uppercase');
+      } catch (error) {
+        assert.strictEqual(error.errors.name, '"name" must only contain uppercase characters');
+      }
     });
 
-    it('does convert if convert=true', (done) => {
-      joiOptions.convert = true;
-
-      validate.form(schema, joiOptions, undefined)(context, function (err, context) {
-        assert.equal(err, null);
-        assert.deepEqual(context.data, converted);
-        done();
-      });
+    it('does convert if convert === true', async () => {
+      const joiOptions = { convert: true };
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
 
-    it('does convert if joiOptions is not provided (joi defaults)', (done) => {
-      validate.form(schema, undefined, undefined)(context, function (err, context) {
-        assert.equal(err, null);
-        assert.deepEqual(context.data, converted);
-        done();
-      });
+    it('converts by default', async () => {
+      const joiOptions = {};
+      try {
+        const validateWithJoi = validate.form(schema, joiOptions, undefined);
+        const responseContext = await validateWithJoi(context);
+        assert.deepEqual(responseContext.data, converted);
+      } catch (error) {
+        assert(!error, 'should not have failed');
+      }
     });
   });
 });
