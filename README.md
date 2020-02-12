@@ -99,7 +99,23 @@ This repo helps implement this in [Feathers](http://feathersjs.com/) CRUD
 
 ## API Reference
 
-To do.
+The `joiOptions` object is passed directly to the schema, internally.  You can see all of the available options and defaults [in the @hapi/joi documentation](https://hapi.dev/family/joi/api/?v=17.1.0#anyvalidatevalue-options).  Here is a summary of the defaults:
+
+```js
+const joiDefaults = {
+  abortEarly: true,
+  allowUnknown: false,
+  cache: true,
+  convert: true,
+  debug: false,
+  externals: true,
+  noDefaults: false,
+  nonEnumerables: false,
+  presence: 'optional',
+  skipFunctions: false,
+  stripUnknown: false
+};
+```
 
 ## Tests
 
