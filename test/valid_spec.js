@@ -2,16 +2,80 @@
 /* eslint  newline-per-chained-call: 0, no-shadow: 0, one-var: 0,
 one-var-declaration-per-line: 0, prefer-arrow-callback: 0 */ /* ES5 code */
 
-const assert = require('chai').assert;
+const { assert } = require('chai');
+const Joi = require('@hapi/joi');
 const validate = require('../index');
 
-const Joi = require('@hapi/joi');
 const name = Joi.string().trim().regex(/^[\sa-zA-Z0-9]{5,30}$/).required();
 const password = Joi.string().trim().min(2).max(30).required();
 const schema = Joi.object().keys({
   name: name.uppercase(),
   password,
   confirmPassword: password.label('Confirm password'),
+});
+
+const { ObjectID } = require('mongodb');
+/**
+ * Custom objectId validator
+ */
+function objectId() {
+  return Joi.custom((value, helpers) => {
+    if (value === null || value === undefined) {
+      return value;
+    }
+    try {
+      return new ObjectID(value);
+    } catch (error) {
+      const errVal = helpers.error('any.invalid');
+      errVal.message = `"${errVal.path.join('.')}" objectId validation failed because ${error.message}`;
+      return errVal;
+    }
+  }, 'objectId');
+}
+
+describe('custom context with getContext', async () => {
+  const schema = Joi.object({
+    userId: objectId(),
+  });
+
+  it('allows validating params.query', async () => {
+    const joiOptions = {
+      convert: true,
+      getContext(context) {
+        return context.params.query;
+      },
+      setContext(context, newValues) {
+        Object.assign(context.params.query, newValues);
+      },
+    };
+    const context = {
+      params: {
+        query: {
+          userId: '5e44b40855534a38798ba1aa',
+        },
+      },
+    };
+    try {
+      const validateWithJoi = validate.form(schema, joiOptions);
+      const responseContext = await validateWithJoi(context);
+      assert(responseContext.params.query.userId instanceof ObjectID, 'params.query.userId should be converted to an objectId');
+    } catch (error) {
+      assert(!error, 'should not have failed');
+    }
+  });
+
+  it('throws if getContext is used without setContext', async () => {
+    const joiOptions = {
+      getContext() {},
+    };
+    try {
+      const validateWithJoi = validate.form(schema, joiOptions);
+      const responseContext = await validateWithJoi(context);
+      assert(!responseContext, 'should have failed');
+    } catch (error) {
+      assert.equal(error.message, 'getContext and setContext must be used together');
+    }
+  });
 });
 
 describe('valid values', () => {

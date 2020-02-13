@@ -54,7 +54,8 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.18.3",
     "istanbul": "^0.4.5",
-    "mocha": "^7.0.1"
+    "mocha": "^7.0.1",
+    "mongodb": "^3.5.3"
   },
   "engines": {
     "node": ">4.2.4"

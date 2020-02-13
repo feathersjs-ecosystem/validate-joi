@@ -1,12 +1,13 @@
+/* eslint-disable no-template-curly-in-string */
 
 /* eslint comma-dangle:0, newline-per-chained-call: 0, no-shadow: 0,
  object-shorthand: 0, one-var: 0, one-var-declaration-per-line: 0,
  prefer-arrow-callback: 0 */ /* ES5 code */
 
-const assert = require('chai').assert;
+const { assert } = require('chai');
+const Joi = require('@hapi/joi');
 const validate = require('../index');
 
-const Joi = require('@hapi/joi');
 const name = Joi.string().trim().regex(/^[\sa-zA-Z0-9]{5,30}$/).required();
 const password = Joi.string().trim().min(2).max(30).required();
 const schema = Joi.object().keys({
@@ -169,10 +170,12 @@ describe('invalid data - form UI', () => {
 
   it('throws on error. translate using substrings', async () => {
     const translations = [
-      { regex: 'at least 2 characters long',
+      {
+        regex: 'at least 2 characters long',
         message: '"${key}" must be 2 or more chars.'
       },
-      { regex: /required pattern/,
+      {
+        regex: /required pattern/,
         message: '"${key}" is badly formed.'
       }
     ];
