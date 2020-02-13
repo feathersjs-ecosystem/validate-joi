@@ -89,6 +89,30 @@ export.before = {
 Note: Data values in the `$set` operator are not validated.
 You could use `joi-errors-for-forms` for that. 
 
+## Validate Anything in the Hook Context
+
+As of version 3.1.0, you can validate anything in the hook `context` using the `getContext` and `setContext` options.
+
+```js
+const objectId = require('./some-custom-validator')
+const schema = Joi.object({
+  userId: objectId(),
+});
+
+const joiOptions = {
+  getContext(context) {
+    return context.params.query;
+  },
+  setContext(context, newValues) {
+    Object.assign(context.params.query, newValues);
+  },
+};
+
+export.before = {
+  find: [ validate.mongoose(schema, joiOptions, translations) ]
+};
+```
+
 ## Motivation
 
 Data must be validated and sanitized before the database is changed.
@@ -113,7 +137,9 @@ const joiDefaults = {
   nonEnumerables: false,
   presence: 'optional',
   skipFunctions: false,
-  stripUnknown: false
+  stripUnknown: false,
+  getContext: undefined,
+  setContext: undefined,
 };
 ```
 
