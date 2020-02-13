@@ -1,4 +1,4 @@
-/* eslint comma-dangle: 0, object-shorthand: 0, prefer-arrow-callback: 0*/ /* ES5 code */
+/* eslint comma-dangle: 0, object-shorthand: 0, prefer-arrow-callback: 0 */
 const errors = require('@feathersjs/errors');
 const utils = require('feathers-hooks-common/lib/services');
 const joiErrorsForForms = require('joi-errors-for-forms');
@@ -16,7 +16,9 @@ const joiDefaults = {
   nonEnumerables: false,
   presence: 'optional',
   skipFunctions: false,
-  stripUnknown: false
+  stripUnknown: false,
+  getContext: undefined,
+  setContext: undefined
 };
 
 function setupValidateWithJoi(joiSchema, joiOptions, translator, ifTest) {
@@ -24,18 +26,29 @@ function setupValidateWithJoi(joiSchema, joiOptions, translator, ifTest) {
     throw new errors.GeneralError('joiOptions must be a valid object.');
   }
 
-  const mergedOptions = Object.assign({}, joiDefaults, joiOptions);
+  const { getContext, setContext, ...mergedOptions } = { ...joiDefaults, ...joiOptions };
+
+  if ((getContext || setContext) && (!getContext || !setContext)) {
+    throw new errors.GeneralError('getContext and setContext must be used together');
+  }
 
   return async function validateWithJoi(context, next) {
-    utils.checkContext(context, 'before', ['create', 'update', 'patch'], 'validate-joi');
-    const values = utils.getItems(context);
-
+    let values;
+    if (typeof getContext === 'function') {
+      values = getContext(context);
+    } else {
+      values = utils.getItems(context);
+    }
 
     try {
       const convertedValues = await joiSchema.validateAsync(values, mergedOptions);
 
       if (mergedOptions.convert === true) {
-        utils.replaceItems(context, convertedValues);
+        if (typeof setContext === 'function') {
+          setContext(context, convertedValues);
+        } else {
+          utils.replaceItems(context, convertedValues);
+        }
       }
 
       if (typeof next === 'function') {
