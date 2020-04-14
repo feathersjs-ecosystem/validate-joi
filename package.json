@@ -31,7 +31,8 @@
   ],
   "author": "John Szwaronek <johnsz9999@gmail.com>",
   "contributors": [
-    "Luis A. Salas <betinho8901@gmail.com>"
+    "Luis A. Salas <betinho8901@gmail.com>",
+    "Marshall Thompson <marshall@creativeideal.net>"
   ],
   "license": "MIT",
   "bugs": {
@@ -42,7 +43,8 @@
     "@feathersjs/errors": "^4.5.1",
     "@hapi/joi": "^17.1.0",
     "feathers-hooks-common": "^5.0.2",
-    "joi-errors-for-forms": "^0.2.2"
+    "joi-errors-for-forms": "^0.2.2",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -55,7 +57,7 @@
     "eslint-plugin-react": "7.18.3",
     "istanbul": "^0.4.5",
     "mocha": "^7.0.1",
-    "mongodb": "^3.5.3"
+    "mongodb": "^3.5.5"
   },
   "engines": {
     "node": ">4.2.4"

@@ -2,6 +2,8 @@
 const errors = require('@feathersjs/errors');
 const utils = require('feathers-hooks-common/lib/services');
 const joiErrorsForForms = require('joi-errors-for-forms');
+const Joi = require('@hapi/joi');
+const pick = require('lodash/pick');
 
 // We only directly need the convert option. The others are listed for convenience.
 // See defaults at https://hapi.dev/family/joi/api/?v=17.1.0#anyvalidatevalue-options
@@ -67,7 +69,7 @@ function setupValidateWithJoi(joiSchema, joiOptions, translator, ifTest) {
   };
 }
 
-module.exports = {
+const validators = {
   form: function (joiSchema, joiOptions, translations, ifTest) {
     const translator = joiErrorsForForms.form(translations);
     return setupValidateWithJoi(joiSchema, joiOptions, translator, ifTest);
@@ -77,3 +79,33 @@ module.exports = {
     return setupValidateWithJoi(joiSchema, joiOptions, translator, ifTest);
   }
 };
+
+/**
+ * The validatedProvidedAttrs hook is great for validating patch requests, where a partial
+ * schema needs to be validated.  It only validates the attributes that have matching keys
+ * in `context.data`.
+ * @param {Object} validationsObj - an object containing the raw keys from a service's
+ *    schema object. It cannot be already wrapped in `Joi.object(validationsObject)`.
+ * @param {JoiOptionsObject} joiOptions
+ */
+function setupValidateProvidedData(validationsObj, joiOptions) {
+  if (!validationsObj || typeof validationsObj !== 'object') {
+    throw new Error('The `validationsObj` argument is required.');
+  }
+  return function validatedProvidedData(context) {
+    if (context.type === 'after') {
+      throw new Error('validateProvidedData can only be a before hook');
+    }
+    const patchAttrs = pick(validationsObj, Object.keys(context.data));
+    const patchSchema = Joi.object(patchAttrs);
+
+    const validateHook = validators.form(patchSchema, joiOptions);
+
+    return validateHook(context);
+  };
+}
+
+Object.assign(validators, { validateProvidedData: setupValidateProvidedData });
+
+
+module.exports = validators;

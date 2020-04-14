@@ -6,6 +6,10 @@ and optionally translated for clarity or internationalization.
 [![Build Status](https://travis-ci.org/feathers-plus/validate-joi.svg?branch=master)](https://travis-ci.org/feathers-plus/validate-joi)
 [![Coverage Status](https://coveralls.io/repos/github/feathers-plus/validate-joi/badge.svg?branch=master)](https://coveralls.io/github/feathers-plus/validate-joi?branch=master)
 
+## New in Version 3.2
+
+Version 3.2 adds the `validateProvidedData` hook, which can be very useful in validating patch requests.
+
 ## New in Version 3.1
 
 - 🙌 Updated to work with latest `@hapi/joi`.
@@ -15,6 +19,8 @@ and optionally translated for clarity or internationalization.
 - 🤷‍♂️ It might still support FeathersJS V3, because the callback syntax is still supported.
 
 Since `Joi.validate()` has been removed, all validations now use `schema.validateAsync()`, which means this package now supports asynchronous validations.
+
+If you're using MongoDB, be sure to take a look at [@feathers-plus/validate-joi-mongodb](https://github.com/feathers-plus/validate-joi-mongodb) for some time-saving utilities.
 
 ## Installation
 
@@ -112,6 +118,44 @@ const joiOptions = {
 export.before = {
   find: [ validate.mongoose(schema, joiOptions, translations) ]
 };
+```
+
+## validateProvidedData Hook
+
+The `validateProvidedData` hook is just like `validate.form`, but it only validates the attributes from the schema which are actually present in the request's `data` object.  In short, it allows partial validation of the schema attributes.  Using it as a hook looks like this:
+
+```js
+const validate = require('@featehrs-plus/validate-joi')
+const attrs = require('./faqs.model')
+
+const hooks = {
+  before: {
+    patch: [
+      validate.validateProvidedData(attrs, { abortEarly: false })
+    ]
+  }
+}
+```
+
+The above example supposes that you have an `/faqs` service with a model that looks like the following.  Notice how the `attrs` are defined as a separate object, then they are used in the schema and made available in the export.  The `validateProvidedData` hook uses the individual attrs to validate each individual item in the request's `data` object.
+
+```js
+// src/services/faqs/faqs.model.js
+const Joi = require('@hapi/joi')
+const { objectId } = require('@feathers-plus/validate-joi-mongodb')
+
+const attrs = {
+  _id: objectId(),
+  question: Joi.string().disallow(null).required(),
+  answer: Joi.string().disallow(null).required(),
+  isPublic: Joi.boolean().default(false),
+  createdBy: objectId().disallow(null).required()
+}
+
+module.exports = {
+  attrs,
+  schema: Joi.object(attrs)
+}
 ```
 
 ## Motivation
