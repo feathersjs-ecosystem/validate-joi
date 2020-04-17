@@ -41,7 +41,7 @@
   "homepage": "https://github.com/feathers-plus/validate-joi#readme",
   "dependencies": {
     "@feathersjs/errors": "^4.5.1",
-    "@hapi/joi": "^17.1.0",
+    "@hapi/joi": "^17.0.0",
     "feathers-hooks-common": "^5.0.2",
     "joi-errors-for-forms": "^0.2.2",
     "lodash": "^4.17.15"
