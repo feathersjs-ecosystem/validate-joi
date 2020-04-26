@@ -42,6 +42,7 @@
   "dependencies": {
     "@feathersjs/errors": "^4.5.1",
     "@hapi/joi": "^17.0.0",
+    "@types/hapi__joi": "^16.0.12",
     "feathers-hooks-common": "^5.0.2",
     "joi-errors-for-forms": "^0.2.2",
     "lodash": "^4.17.15"
