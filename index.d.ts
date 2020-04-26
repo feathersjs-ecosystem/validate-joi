@@ -23,7 +23,7 @@ export interface RawSchema {
 }
 
 export interface Translation {
-    [key: string]: (context?: HookContext) => {};
+    [key: string]: (context?: any) => string | undefined;
 }
 
 type FeathersHook = ((context: HookContext) => any);
