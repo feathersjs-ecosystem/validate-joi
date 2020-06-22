@@ -62,7 +62,12 @@ function setupValidateWithJoi(joiSchema, joiOptions, translator, ifTest) {
       if (formErrors) {
         // Hacky, but how else without a custom assert?
         const msg = ifTest ? JSON.stringify(formErrors) : 'Invalid data';
-        throw new errors.BadRequest(msg, { errors: formErrors });
+        throw new errors.BadRequest(msg, {
+          errors: formErrors,
+          type: context.type,
+          path: context.path,
+          method: context.method,
+        });
       }
       return formErrors || error;
     }
