@@ -1,4 +1,3 @@
-
 /* eslint  newline-per-chained-call: 0, no-shadow: 0, one-var: 0,
 one-var-declaration-per-line: 0, prefer-arrow-callback: 0 */ /* ES5 code */
 

@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.jsx .",
     "test": "mocha --reporter spec",
-    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*",
+    "cover": "nyc npm run test",
     "publish": "git push origin --tags && git push origin",
     "release:pre": "npm version prerelease && npm publish --tag pre",
     "release:patch": "npm version patch && npm publish",
@@ -42,12 +42,12 @@
   "dependencies": {
     "@feathersjs/errors": "^4.5.1",
     "@hapi/joi": "^17.0.0",
-    "@types/hapi__joi": "^16.0.12",
     "feathers-hooks-common": "^5.0.2",
     "joi-errors-for-forms": "^0.2.2",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "@types/hapi__joi": "^17.1.4",
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
     "coveralls": "^3.0.9",
@@ -57,8 +57,9 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.18.3",
     "istanbul": "^0.4.5",
-    "mocha": "^7.0.1",
-    "mongodb": "^3.5.5"
+    "mocha": "^8.0.1",
+    "mongodb": "^3.5.5",
+    "nyc": "^15.1.0"
   },
   "engines": {
     "node": ">4.2.4"

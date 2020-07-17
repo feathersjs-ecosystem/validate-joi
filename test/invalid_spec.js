@@ -193,7 +193,6 @@ describe('invalid data - form UI', () => {
   });
 });
 
-
 describe('invalid data - Mongoose', () => {
   var joiOptions, valuesBad, contextBad; // eslint-disable-line no-var
 
