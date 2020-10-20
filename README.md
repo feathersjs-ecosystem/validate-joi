@@ -37,7 +37,7 @@ const Joi = require('joi');
 const validate = require('@feathers-plus/validate-joi');
 
 const name = Joi.string().trim().min(5).max(30)
-  .regex(/^[\sa-zA-Z0-9]$/, 'letters, numbers and spaces').required();
+  .regex(/^[\sa-zA-Z0-9]*$/, 'letters, numbers and spaces').required();
 const password = Joi.string().trim().min(2).max(30).required();
 const schema = Joi.object().keys({
   name: name,
