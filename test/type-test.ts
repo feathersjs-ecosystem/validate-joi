@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import validate, { ValidateJoiOptions } from '../index.js';
 
 const translations = {

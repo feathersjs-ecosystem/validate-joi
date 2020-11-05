@@ -2,7 +2,7 @@
 const errors = require('@feathersjs/errors');
 const utils = require('feathers-hooks-common/lib/services');
 const joiErrorsForForms = require('joi-errors-for-forms');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const pick = require('lodash/pick');
 
 // We only directly need the convert option. The others are listed for convenience.
