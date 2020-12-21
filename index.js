@@ -112,5 +112,4 @@ function setupValidateProvidedData(validationsObj, joiOptions) {
 
 Object.assign(validators, { validateProvidedData: setupValidateProvidedData });
 
-
 module.exports = validators;
