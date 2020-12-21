@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const { validateProvidedData: setupValidate } = require('../index');
 
 describe('validate-provided-data hook', () => {

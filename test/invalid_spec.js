@@ -5,7 +5,7 @@
  prefer-arrow-callback: 0 */ /* ES5 code */
 
 const { assert } = require('chai');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const validate = require('../index');
 
 const name = Joi.string().trim().regex(/^[\sa-zA-Z0-9]{5,30}$/).required();

@@ -12,7 +12,7 @@ Version 3.2 adds the `validateProvidedData` hook, which can be very useful in va
 
 ## New in Version 3.1
 
-- 🙌 Updated to work with latest `@hapi/joi`.
+- 🙌 Updated to work with latest `joi`.
 - 🎁 Support for asynchronous validations.
 - 🚀 Support for FeathersJS V4.
 - 😎 Validate anything in the hook `context`.
@@ -33,7 +33,7 @@ yarn add @feathers-plus/validate-joi
 ## Usage Example
 
 ```js
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const validate = require('@feathers-plus/validate-joi');
 
 const name = Joi.string().trim().min(5).max(30)
@@ -141,7 +141,7 @@ The above example supposes that you have an `/faqs` service with a model that lo
 
 ```js
 // src/services/faqs/faqs.model.js
-const Joi = require('@hapi/joi')
+const Joi = require('joi')
 const { objectId } = require('@feathers-plus/validate-joi-mongodb')
 
 const attrs = {
@@ -168,7 +168,7 @@ This repo helps implement this in [Feathers](http://feathersjs.com/) CRUD
 
 ## API Reference
 
-The `joiOptions` object is passed directly to the schema, internally.  You can see all of the available options and defaults [in the @hapi/joi documentation](https://hapi.dev/family/joi/api/?v=17.1.0#anyvalidatevalue-options).  Here is a summary of the defaults:
+The `joiOptions` object is passed directly to the schema, internally.  You can see all of the available options and defaults [in the joi documentation](https://hapi.dev/family/joi/api/?v=17.1.0#anyvalidatevalue-options).  Here is a summary of the defaults:
 
 ```js
 const joiDefaults = {
