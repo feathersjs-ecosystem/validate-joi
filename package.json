@@ -1,10 +1,11 @@
 {
-  "name": "@feathers-plus/validate-joi",
-  "version": "3.4.0",
+  "name": "feathers-validate-joi",
+  "version": "4.0.0",
   "description": "Feathers hook utility for schema validation, sanitization, and client notification using Joi.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .js,.jsx .",
+    "lint": "eslint --fix --ext .js,.jsx .",
+    "lint:ci": "eslint --ext .js,.jsx .",
     "test": "mocha --reporter spec",
     "cover": "nyc npm run test",
     "publish": "git push origin --tags && git push origin",
@@ -13,12 +14,15 @@
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/feathers-plus/validate-joi.git"
+    "url": "git+https://github.com/feathersjs-ecosystem/validate-joi.git"
   },
   "keywords": [
     "feathers",
@@ -36,9 +40,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/feathers-plus/validate-joi/issues"
+    "url": "https://github.com/feathersjs-ecosystem/validate-joi/issues"
   },
-  "homepage": "https://github.com/feathers-plus/validate-joi#readme",
+  "homepage": "https://github.com/feathersjs-ecosystem/validate-joi#readme",
   "dependencies": {
     "@feathersjs/errors": "^4.5.1",
     "feathers-hooks-common": "^5.0.2",
@@ -47,21 +51,23 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@types/hapi__joi": "^17.1.4",
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
     "coveralls": "^3.0.9",
-    "eslint": "7.4.0",
-    "eslint-config-airbnb": "18.2.0",
-    "eslint-plugin-import": "2.22.0",
-    "eslint-plugin-jsx-a11y": "6.3.1",
-    "eslint-plugin-react": "7.20.3",
-    "istanbul": "^0.4.5",
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
     "mocha": "^8.0.1",
     "mongodb": "^3.5.5",
     "nyc": "^15.1.0"
   },
-  "engines": {
-    "node": ">4.2.4"
+  "nyc": {
+    "reporter": [
+      "text",
+      "lcov"
+    ],
+    "sourceMap": true
   }
 }
