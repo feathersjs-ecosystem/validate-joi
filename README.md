@@ -35,7 +35,7 @@ const joiOptions = { convert: true, abortEarly: false };
 (1) Validate sanitize data. The client receives any errors in a
 [format suitable for forms](https://github.com/eddyystop/joi-errors-for-forms#code-examples)
 which also seems to be
-[recommend by Feathers](http://docs.feathersjs.com/middleware/error-handling.html#featherserror-api).
+[recommend by Feathers](https://docs.feathersjs.com/api/errors.html#feathers-errors).
 
 ```js
 export.before = {
@@ -149,7 +149,7 @@ Data must be validated and sanitized before the database is changed.
 The client must be informed of any errors using a schema friendly to web/mobile apps.
 
 This repo helps implement this in [Feathers](http://feathersjs.com/) CRUD
-[hooks](http://docs.feathersjs.com/hooks/readme.html).
+[hooks](https://docs.feathersjs.com/api/hooks.html).
 
 ## API Reference
 

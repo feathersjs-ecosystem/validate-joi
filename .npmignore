@@ -1,9 +1,13 @@
 # npm will use .gitignore if .npmignore does not exist. we don't want this.
 # npm modules
 node_modules/
-# ES6 source
-src/
 # coverage report
 coverage/
-# checklists and standard files
-docs-secure/
+# Misc
+.vscode/
+.github/
+.nyc_output/
+test/
+.eslintignore
+.eslintrc
+.gitignore
