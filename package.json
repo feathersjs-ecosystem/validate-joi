@@ -3,6 +3,7 @@
   "version": "4.0.0",
   "description": "Feathers hook utility for schema validation, sanitization, and client notification using Joi.",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "lint": "eslint --fix --ext .js,.jsx .",
     "lint:ci": "eslint --ext .js,.jsx .",

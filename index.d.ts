@@ -1,7 +1,8 @@
+import type { HookContext, Hook } from '@feathersjs/feathers';
 import Joi from 'joi';
-import { HookContext } from '@feathersjs/feathers';
 
-export interface ValidateJoiOptions {
+declare namespace FeathersValidateJoi {
+  export interface ValidateJoiOptions {
     abortEarly?: boolean,
     allowUnknown?: boolean,
     cache?: boolean,
@@ -13,26 +14,22 @@ export interface ValidateJoiOptions {
     presence?: Joi.PresenceMode,
     skipFunctions?: boolean,
     stripUnknown?: boolean,
-    getContext?: (context: HookContext, next?: (arg0: any, arg1: any) => any) => any,
-    setContext?: (context: HookContext, next?: (arg0: any, arg1: any) => any) => any,
+    getContext?: (context: HookContext) => void
+    setContext?: (context: HookContext, validatedValues: any) => void
     [option: string]: any
-}
-
-export interface RawSchema {
+  }
+  
+  export interface RawSchema {
     [field: string]: Joi.AnySchema;
-}
-
-export interface Translation {
+  }
+  
+  export interface Translation {
     [key: string]: (context?: any) => string | undefined;
+  }
+  
+  export function validateProvidedData (validationsObj: RawSchema, joiOptions?: ValidateJoiOptions): Hook
+  export function form (joiSchema: Joi.AnySchema, joiOptions?: ValidateJoiOptions, translations?: Translation, ifTest?: boolean): Hook
+  export function mongoose (joiSchema: Joi.AnySchema, joiOptions?: ValidateJoiOptions, translations?: Translation, ifTest?: boolean): Hook
 }
 
-type FeathersHook = ((context: HookContext) => any);
-
-export interface Validators {
-    setupValidateProvidedData: (validationsObj: RawSchema, joiOptions?: ValidateJoiOptions) => FeathersHook,
-    form: (joiSchema: Joi.AnySchema, joiOptions?: ValidateJoiOptions, translations?: Translation, ifTest?: boolean) => FeathersHook,
-    mongoose: (joiSchema: Joi.AnySchema, joiOptions?: ValidateJoiOptions, translations?: Translation, ifTest?: boolean) => FeathersHook
-}
-
-declare const validators: Validators;
-export default validators;
+export = FeathersValidateJoi;
