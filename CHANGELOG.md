@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.1
+
+**Change**: Update and export typescript type definition file in `package.json`
+**Chore**: Updated dependency `@feathersjs/errors@4.5.3` -> `4.5.11`
+**Chore**: Updated devDependencies: `mocha`, `eslint`, `eslint-plugin-react`, `eslint-plugin-jsx-a11y`
+
 ## 4.0.0
 
 **Breaking**: Changed core dependency from `@hapi/joi` -> `joi`
