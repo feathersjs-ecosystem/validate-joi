@@ -93,23 +93,32 @@ const validators = {
  *    schema object. It cannot be already wrapped in `Joi.object(validationsObject)`.
  * @param {JoiOptionsObject} joiOptions
  */
-function setupValidateProvidedData(validationsObj, joiOptions) {
-  if (!validationsObj || typeof validationsObj !== 'object') {
-    throw new Error('The `validationsObj` argument is required.');
-  }
-  return function validatedProvidedData(context) {
-    if (context.type === 'after') {
-      throw new Error('validateProvidedData can only be a before hook');
+function setupValidateProvidedData(validator) {
+  return function validateProvidedData(validationsObj, joiOptions) {
+    if (!validationsObj || typeof validationsObj !== 'object') {
+      throw new Error('The `validationsObj` argument is required.');
     }
-    const patchAttrs = pick(validationsObj, Object.keys(context.data));
-    const patchSchema = Joi.object(patchAttrs);
+    return function validatedProvidedData(context) {
+      if (context.type === 'after') {
+        throw new Error('validateProvidedData can only be a before hook');
+      }
+      const patchAttrs = pick(validationsObj, Object.keys(context.data));
+      const patchSchema = Joi.object(patchAttrs);
 
-    const validateHook = validators.form(patchSchema, joiOptions);
+      const validateHook = validator(patchSchema, joiOptions);
 
-    return validateHook(context);
+      return validateHook(context);
+    };
   };
 }
 
-Object.assign(validators, { validateProvidedData: setupValidateProvidedData });
+const withProvidedDataValidators = {
+  formWithProvidedData: setupValidateProvidedData(validators.form),
+  mongooseWithProvidedData: setupValidateProvidedData(validators.mongoose),
+}
+
+Object.assign(validators, withProvidedDataValidators, {
+  validateProvidedData: withProvidedDataValidators.formWithProvidedData,
+});
 
 module.exports = validators;
