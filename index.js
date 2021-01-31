@@ -86,7 +86,7 @@ const validators = {
 };
 
 /**
- * The validatedProvidedAttrs hook is great for validating patch requests, where a partial
+ * The validateProvidedData hook is great for validating patch requests, where a partial
  * schema needs to be validated.  It only validates the attributes that have matching keys
  * in `context.data`.
  * @param {Object} validationsObj - an object containing the raw keys from a service's
