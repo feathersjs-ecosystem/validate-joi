@@ -45,7 +45,7 @@ export.before = {
 };
 ```
 
-(2) Errors are returned in a 
+(2) Errors are returned in a
     [Mongoose format.](https://github.com/eddyystop/joi-errors-for-forms#code-examples)
 
 ```js
@@ -110,7 +110,7 @@ export.before = {
 The `validateProvidedData` hook is just like `validate.form`, but it only validates the attributes from the schema which are actually present in the request's `data` object.  In short, it allows partial validation of the schema attributes.  Using it as a hook looks like this:
 
 ```js
-const validate = require('@featehrs-plus/validate-joi')
+const validate = require('feathers-validate-joi')
 const attrs = require('./faqs.model')
 
 const hooks = {
