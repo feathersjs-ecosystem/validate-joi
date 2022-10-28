@@ -45,7 +45,7 @@ export.before = {
 };
 ```
 
-(2) Errors are returned in a 
+(2) Errors are returned in a
     [Mongoose format.](https://github.com/eddyystop/joi-errors-for-forms#code-examples)
 
 ```js
